@@ -1,6 +1,6 @@
 # Portfolio Tail Risk: VaR and Expected Shortfall, five ways
 
-![tests](https://github.com/igazys/var-es-api/actions/workflows/tests.yml/badge.svg)
+
 
 A local web app that answers one question: **how much could this portfolio lose on a bad day?**
 You enter the instruments you hold and how much is in each, pick a time horizon and a confidence
@@ -8,7 +8,6 @@ level, and the app downloads price history and estimates **Value-at-Risk (VaR)**
 **Expected Shortfall (ES)** with five different methods. Each method is explained in plain
 language next to its result.
 
-![Results page](docs/screenshot.png)
 
 ## Run it
 
