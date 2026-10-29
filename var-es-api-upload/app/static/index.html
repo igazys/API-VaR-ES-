@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio Tail Risk</title>
+  <meta name="description" content="Value-at-Risk and Expected Shortfall for your portfolio, five ways, each explained.">
+  <link rel="stylesheet" href="/static/style.css?v=6">
+</head>
+<body>
+  <header class="masthead">
+    <h1>How much could this portfolio lose on a bad day?</h1>
+    <p class="lede">Enter what you hold. The page downloads price history from Yahoo Finance and
+      estimates Value-at-Risk and Expected Shortfall five different ways, with each method explained.</p>
+  </header>
+
+  <main class="layout">
+    <form id="portfolio-form" class="setup" novalidate>
+      <fieldset>
+        <legend>Holdings</legend>
+        <p class="hint">Yahoo Finance symbols, such as <code>SPY</code>, <code>AAPL</code>,
+          <code>BTC-USD</code> or <code>CDR.WA</code>.</p>
+        <div class="holdings" role="table" aria-label="Holdings">
+          <div class="holdings-head" role="row">
+            <span role="columnheader">Ticker</span>
+            <span role="columnheader">Value (USD)</span>
+            <span role="columnheader"><span class="sr-only">Remove</span></span>
+          </div>
+          <div id="rows"></div>
+          <div class="holdings-total" role="row">
+            <span role="cell">Total</span>
+            <span role="cell" id="total">$0</span>
+            <span role="cell"></span>
+          </div>
+        </div>
+        <button type="button" id="add-row" class="quiet">Add instrument</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Time horizon</legend>
+        <div class="segmented" id="horizon-presets">
+          <label><input type="radio" name="horizon-preset" value="1" checked><span>1 day</span></label>
+          <label><input type="radio" name="horizon-preset" value="5"><span>1 week</span></label>
+          <label><input type="radio" name="horizon-preset" value="10"><span>2 weeks</span></label>
+          <label><input type="radio" name="horizon-preset" value="21"><span>1 month</span></label>
+        </div>
+        <label class="inline-field">
+          <span>Trading days</span>
+          <input type="number" id="horizon" min="1" max="250" value="1" required>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Confidence level</legend>
+        <div class="segmented" id="alpha-presets">
+          <label><input type="radio" name="alpha" value="0.95"><span>95%</span></label>
+          <label><input type="radio" name="alpha" value="0.975"><span>97.5%</span></label>
+          <label><input type="radio" name="alpha" value="0.99" checked><span>99%</span></label>
+          <label><input type="radio" name="alpha" value="0.995"><span>99.5%</span></label>
+        </div>
+        <p class="hint" id="alpha-hint"></p>
+      </fieldset>
+
+      <details class="advanced">
+        <summary>Data settings</summary>
+        <label class="inline-field">
+          <span>Download prices from</span>
+          <input type="date" id="start" value="2018-01-01" required>
+        </label>
+        <label class="inline-field">
+          <span>Days of history to use</span>
+          <input type="number" id="window" min="100" max="5000" value="500" required>
+        </label>
+        <p class="hint">The calculations use the most recent days of history. 500 days is about two years.</p>
+      </details>
+
+      <p id="form-error" class="error" role="alert" hidden></p>
+      <button type="submit" id="submit" class="primary">Calculate risk</button>
+    </form>
+
+    <section id="results" class="results" aria-live="polite">
+      <div class="empty">
+        <h2>What you will get</h2>
+        <p><strong>Value-at-Risk (VaR)</strong> answers: “On all but the worst 1 in 100 days, how much
+          could I lose at most?” <strong>Expected Shortfall (ES)</strong> answers the follow-up:
+          “And when one of those worst days does happen, how much do I lose on average?”</p>
+        <p>No single method gives the true answer, so the page shows five. Where they disagree tells
+          you something about the portfolio, such as fat tails or rising volatility.</p>
+      </div>
+    </section>
+  </main>
+
+  <template id="row-template">
+    <div class="holding" role="row">
+      <span role="cell"><input type="text" class="ticker" aria-label="Ticker" autocomplete="off" spellcheck="false" maxlength="20"></span>
+      <span role="cell"><input type="text" class="value" aria-label="Value in USD" inputmode="decimal" autocomplete="off"></span>
+      <span role="cell"><button type="button" class="remove" aria-label="Remove instrument">×</button></span>
+    </div>
+  </template>
+
+  <script src="/static/app.js?v=6"></script>
+</body>
+</html>
